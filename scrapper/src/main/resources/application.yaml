@@ -1,0 +1,64 @@
+app:
+  kafka:
+    poll-interval-ms: 5000
+    name: link-update
+    partitions: 2
+    replicas: 2
+  github-token: ${GITHUB_TOKEN}
+  stackoverflow:
+    key: ${SO_TOKEN_KEY}
+    access-token: ${SO_ACCESS_TOKEN}
+  bot-api-url: ${BOT_API_URL:http://localhost:8080}
+  timeout:
+    connect: 5000
+    read: 5000
+  update:
+    delay-ms: 10000
+    processor-type: SEQUENTIAL
+    dispatcher-type: KAFKA
+    thread-count: 4
+    interval-seconds: 30
+    batch-limit: 1000
+
+server:
+  port: ${SERVER_PORT:8081}
+
+access-type: ORM
+
+
+spring:
+  application:
+    name: Scrapper
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/scrapper?currentSchema=scrapper_schema}
+    username: ${SPRING_DATASOURCE_USERNAME:scrapper_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:scrapper_password}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+      idle-timeout: 60000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+  liquibase:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  kafka:
+    bootstrap-servers: localhost:19092,localhost:29092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        acks: all
+        linger.ms: 100
+        batch.size: 16384
+    listener:
+      missing-topics-fatal: false
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui

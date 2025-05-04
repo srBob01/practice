@@ -1,0 +1,56 @@
+app:
+  cache:
+    ttl-minutes: 10
+  kafka:
+    name: link-update
+    retry-max-attempts: 3
+    retry-backoff-ms: 20000
+    partitions: 2
+  telegram-token: ${TELEGRAM_TOKEN}
+  scrapper-api-url: ${SCRAPPER_API_URL:http://localhost:8081}
+  timeout:
+    connect: 5000
+    read: 15000
+
+spring:
+  application:
+    name: Bot
+  liquibase:
+    enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  kafka:
+    bootstrap-servers: localhost:19092,localhost:29092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: bot-group
+      auto-offset-reset: earliest
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      enable-auto-commit: false
+      properties:
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.LongDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.value.default.type: backend.academy.dto.LinkUpdate
+        spring.json.trusted.packages: backend.academy.dto
+    listener:
+      missing-topics-fatal: false
+      ack-mode: manual
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  cache:
+    type: redis
+
+server:
+  port: ${SERVER_PORT:8080}
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui

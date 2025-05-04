@@ -1,0 +1,21 @@
+auth:
+  type: DISABLED
+
+kafka:
+  clusters:
+    - name: local
+      bootstrapServers: kafka-1:9092,kafka-2:9092
+      properties: { }
+      readOnly: false
+
+      consumer:
+        default:
+          key:
+            deserializer: "org.apache.kafka.common.serialization.LongDeserializer"
+          value:
+            deserializer: "org.springframework.kafka.support.serializer.JsonDeserializer"
+            properties:
+              spring.json.value.default.type: "backend.academy.dto.LinkUpdate"
+              spring.json.trusted.packages: "backend.academy.dto"
+
+webclient: { }

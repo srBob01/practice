@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/001-create-chat-table.sql
+  - include:
+      file: db/changelog/changeset/002-create-link-table.sql
+  - include:
+      file: db/changelog/changeset/003-create-chat_link-table.sql
+  - include:
+      file: db/changelog/changeset/004-create-tag-table.sql
+  - include:
+      file: db/changelog/changeset/005-create-link_tag-table.sql
+  - include:
+      file: db/changelog/changeset/006-create-github_link-table.sql
+  - include:
+      file: db/changelog/changeset/007-create-stackoverflow_link-table.sql
+  - include:
+      file: db/changelog/changeset/008-create-outbox-table.sql

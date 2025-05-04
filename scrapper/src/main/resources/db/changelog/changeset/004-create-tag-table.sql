@@ -1,0 +1,6 @@
+-- changeset srBob01:004-create-tag-table
+CREATE TABLE tag
+(
+    id   BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
